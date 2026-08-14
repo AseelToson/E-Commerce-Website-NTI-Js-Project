@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     styleLink.href="../Css/general.css";
     document.head.appendChild(styleLink);
 
-    fetch("General/navbar.html")
+    fetch("../General/navbar.html")
     .then(response => response.text())
     .then(data => {
         const headerContainer = document.createElement("header");
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         document.body.prepend(headerContainer);
     })
 
-    fetch("General/footer.html")
+    fetch("../General/footer.html")
     .then(response => response.text())
     .then(data => {
         const footerContainer = document.createElement("footer");
