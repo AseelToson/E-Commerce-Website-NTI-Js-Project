@@ -1,0 +1,198 @@
+.store-navbar {
+    background-color: #111827;
+    min-height: 60px;
+}
+
+.store-logo {
+    color: #ef1d25 !important;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+/* Search */
+
+.search-box {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-box input {
+    border-radius: 0;
+}
+
+.search-btn {
+    background-color: #ef1d25;
+    color: white;
+    border-radius: 0;
+    width: 45px;
+    
+}
+
+.search-btn:hover {
+    background-color: #d9161d;
+    color: white;
+
+}
+
+
+/* Navbar Actions */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-action {
+    color: white;
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.nav-action .material-symbols-outlined {
+    font-size: 21px;
+}
+
+/* .nav-action:hover {
+    color: #ef1d25;
+} */
+.cart-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+
+    background-color: #ef1d25;
+    color: white;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Mobile */
+
+@media (max-width: 991px) {
+
+    .search-box {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .navbar-actions {
+        margin-top: 15px;
+        margin-left: 0;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .nav-action {
+        flex-direction: row;
+        gap: 8px;
+        font-size: 14px;
+    }
+}
+
+
+
+/* =========================
+   Hero Section
+========================= */
+
+.hero-section {
+    padding: 20px 0;
+}
+
+.hero-banner {
+    min-height: 320px;
+
+    background-color: #111827;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.hero-content {
+    width: 45%;
+    padding-left: 7%;
+}
+
+.hero-small-text {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+
+    margin: 0;
+}
+
+.hero-content h1 {
+    color: #ef1d25;
+
+    font-size: 42px;
+    font-weight: bold;
+
+    margin: 0;
+}
+
+.hero-discount {
+    color: white;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    margin: 10px 0 0;
+}
+
+.hero-description {
+    color: #d1d5db;
+
+    font-size: 14px;
+
+    margin-bottom: 20px;
+}
+
+.hero-btn {
+    display: inline-block;
+
+    background-color: #ef1d25;
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 20px;
+
+    font-weight: bold;
+}
+
+.hero-image {
+    width: 55%;
+    min-height: 320px;
+}
+
+
+
