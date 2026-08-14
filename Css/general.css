@@ -164,8 +164,6 @@ footer {
 }
 
 
-/* Responsive */
-
 @media (max-width: 768px) {
     .footer-column {
         align-items: center;
