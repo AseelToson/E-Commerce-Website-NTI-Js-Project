@@ -16,27 +16,37 @@ function displayWishlist() {
 
 
 
+
     if (wishlist.length === 0) {
+
+        document.body.classList.add(
+            "wishlist-empty-page"
+        );
+
 
         wishlistContainer.innerHTML = `
 
             <div class="col-12">
 
-                <div class="empty-wishlist text-center">
+                <div class="empty-wishlist">
 
-                    <div class="empty-heart">
-                        ♡
-                    </div>
-
-
-                    <h3>
+                    <h2>
                         Your Wishlist is Empty
-                    </h3>
+                    </h2>
 
 
                     <p>
                         You haven't added any products yet.
+                        Start exploring and save your favorites!
                     </p>
+
+
+                    <a
+                        href="products.html"
+                        class="empty-wishlist-btn"
+                    >
+                        Explore Products
+                    </a>
 
                 </div>
 
@@ -45,17 +55,23 @@ function displayWishlist() {
         `;
 
         return;
-
     }
 
 
-  
+    document.body.classList.remove(
+        "wishlist-empty-page"
+    );
+
+
+
 
     wishlist.forEach(product => {
 
         wishlistContainer.innerHTML += `
 
-            <div class="col">
+            <div
+                class="col-12 col-sm-6 col-md-4 col-lg-3"
+            >
 
                 <div class="card wishlist-card h-100">
 
@@ -66,19 +82,16 @@ function displayWishlist() {
 
                         <img
                             src="${product.thumbnail}"
-                            class="card-img-top wishlist-image"
+                            class="wishlist-image"
                             alt="${product.title}"
                         >
 
                     </div>
 
 
-                    <!-- Card Body -->
+                    <!-- Product Information -->
 
-                    <div
-                        class="card-body d-flex flex-column"
-                    >
-
+                    <div class="card-body d-flex flex-column">
 
                         <h5 class="wishlist-product-title">
 
@@ -103,30 +116,22 @@ function displayWishlist() {
 
                         <!-- Buttons -->
 
-                        <div class="d-grid gap-2 mt-auto">
+                        <div class="d-flex gap-2 mt-auto">
 
-
-                            <!-- View Details -->
 
                             <a
                                 href="product-details.html?id=${product.id}"
                                 class="wishlist-view-btn"
                             >
-
                                 View Details
-
                             </a>
 
-
-                            <!-- Remove -->
 
                             <button
                                 class="wishlist-remove-btn remove-btn"
                                 data-id="${product.id}"
                             >
-
                                 Remove
-
                             </button>
 
 
@@ -143,7 +148,8 @@ function displayWishlist() {
     });
 
 
-    
+
+
 
     const removeButtons =
         document.querySelectorAll(
