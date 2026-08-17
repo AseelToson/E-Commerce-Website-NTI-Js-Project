@@ -96,17 +96,7 @@
 }
 
 
-/******************** error border *******************/
-#error-fName,#error-lName,#error-email,#error-phone,#error-repassword{
-    color: red;   
-}
-.form-item input.error-border{
-     border: 2px solid red;
-}
-
-
-
-
+/*****************************************/
 .account-link {
   text-align: center;
   margin-top: 15px;
@@ -122,3 +112,13 @@
 .account-link a:hover {
   text-decoration: underline;
 }
+
+/******************** error border *******************/
+#error-fName,#error-lName,#error-email,#error-phone,#error-repassword{
+    color: red;   
+}
+.form-item input.error-border{
+     border: 2px solid red;
+}
+
+
