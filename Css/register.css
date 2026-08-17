@@ -103,3 +103,22 @@
 .form-item input.error-border{
      border: 2px solid red;
 }
+
+
+
+
+.account-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.account-link a {
+  text-decoration: none;
+  font-weight: bold;
+  color: red;
+}
+
+.account-link a:hover {
+  text-decoration: underline;
+}
