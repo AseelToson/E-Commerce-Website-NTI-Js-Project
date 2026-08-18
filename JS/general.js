@@ -22,3 +22,10 @@ document.addEventListener("DOMContentLoaded",()=>{
    
     // .catch(error=>console.log("navbar canot load"));     //مش لازم
 });
+
+
+
+
+
+
+
