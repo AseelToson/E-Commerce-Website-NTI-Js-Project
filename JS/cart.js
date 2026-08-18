@@ -63,6 +63,7 @@ function displayCart() {
                         Price: $${product.price}
                     </p>
                     
+
                     <div class="quantity">
 
                         <button
