@@ -19,8 +19,14 @@ const searchInput =
 const noProducts =
     document.getElementById("noProducts");
 
+const pagination =
+    document.getElementById("pagination");
+
 
 let allProducts = [];
+let currentProducts = []
+let currentPage = 1
+let productsPerPage = 20
 
 
 
@@ -29,8 +35,10 @@ let allProducts = [];
 async function loadProducts() {
 
     allProducts = await getProducts();
+    currentProducts = allProducts
 
-    displayProducts(allProducts);
+
+    displayProducts(currentProducts);
 
     createCategories();
 
@@ -57,11 +65,13 @@ function displayProducts(products) {
 
     noProducts.classList.add("d-none");
 
-
+    let start = (currentPage - 1) * productsPerPage;
+    let end = start + productsPerPage;
+    let productsToShow = products.slice(start, end);
 
     /* Display Products */
 
-    products.forEach(product => {
+    productsToShow.forEach(product => {
 
         productsContainer.innerHTML += `
 
@@ -167,7 +177,7 @@ function displayProducts(products) {
                         <!-- View Details -->
 
                         <button
-                            class="btn btn-dark details-btn">
+                            class="btn btn-danger details-btn">
 
                             View Details
 
@@ -183,6 +193,65 @@ function displayProducts(products) {
         `;
 
     });
+    createPagination(products)
+
+}
+
+function createPagination(products) {
+
+    let totalPages = Math.ceil(products.length / productsPerPage);
+
+    pagination.innerHTML = "";
+
+    pagination.innerHTML += `
+
+        <button
+            class="btn btn-danger mx-1"
+            onclick="changePage(${currentPage - 1})">
+
+            Previous
+
+        </button>
+
+    `;
+    for (let i = 1; i <= totalPages; i++) {
+
+        pagination.innerHTML += `
+        
+            <button
+                class="btn btn-danger mx-1"
+                onclick="changePage(${i})">
+
+                ${i}
+
+            </button>
+
+        `;
+
+    }
+    pagination.innerHTML += `
+
+        <button
+            class="btn btn-danger mx-1"
+            onclick="changePage(${currentPage + 1})">
+
+            Next
+
+        </button>
+
+    `;
+
+}
+
+function changePage(page) {
+
+    currentPage = page;
+    displayProducts(currentProducts);
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    })
 
 }
 
@@ -210,11 +279,11 @@ function createCategories() {
 
         categorySelect.innerHTML += `
 
-            <option value="${category}">
+        < option value = "${category}" >
 
-                ${category}
+            ${category}
 
-            </option>
+            </option >
 
         `;
 
@@ -360,7 +429,7 @@ function addToWishlist(id, button) {
 function goToDetails(id) {
 
     window.location.href =
-        `product-details.html?id=${id}`;
+        `product - details.html ? id = ${id} `;
 
 }
 
@@ -370,6 +439,8 @@ window.addToWishlist =
 window.goToDetails =
     goToDetails;
 
+window.changePage =
+    changePage;
 
 
 /* ================= Start ================= */
