@@ -1,0 +1,80 @@
+    <nav class="navbar navbar-dark store-navbar navbar-expand-lg">
+      <div class="container-fluid">
+
+        <a class="navbar-brand store-logo" href="../Pages/index.html"> Amazon </a>
+
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+          <form class="d-flex search-box">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search products..."
+              aria-label="Search"
+            />
+
+            <button class="btn search-btn" type="submit">
+              <span class="material-symbols-outlined"> search </span>
+            </button>
+          </form>
+
+
+          <div class="navbar-actions">
+            <!-- Offers -->
+            <a href="../Pages/offers.html" class="nav-action">
+              <span class="material-symbols-outlined"> local_offer </span>
+
+              <span>Offers</span>
+            </a>
+
+
+            <a href="../Pages/wishlist.html" class="nav-action">
+              <span class="material-symbols-outlined"> favorite </span>
+
+              <span>Wishlist</span>
+            </a>
+
+
+             <a href="../Pages/cart.html" class="nav-action cart-link">
+               <span class="cart-icon">
+                    <span class="material-symbols-outlined">
+                     shopping_cart
+                    </span>
+
+                <span id="cartCount" class="cart-badge">0</span>
+                </span>
+
+                <span>Cart</span>
+
+
+
+            <a href="../Pages/login.html" class="nav-action">
+              <span class="material-symbols-outlined"> person </span>
+
+              <span>Sign In</span>
+            </a>
+
+            <!-- Register -->
+            <a href="../Pages/register.html" class="nav-action">
+              <span class="material-symbols-outlined"> person_add </span>
+
+              <span>Register</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>

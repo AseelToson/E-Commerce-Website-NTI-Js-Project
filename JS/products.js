@@ -4,7 +4,6 @@ import {
     searchAboutProduct
 } from "./api.js";
 
-
 const productsContainer =
     document.getElementById("productsContainer");
 
@@ -24,7 +23,9 @@ const noProducts =
 let allProducts = [];
 
 
-// Get Products
+
+/* ================= Load Products ================= */
+
 async function loadProducts() {
 
     allProducts = await getProducts();
@@ -32,13 +33,19 @@ async function loadProducts() {
     displayProducts(allProducts);
 
     createCategories();
+
 }
 
 
-// Display Products
+
+/* ================= Display Products ================= */
+
 function displayProducts(products) {
 
     productsContainer.innerHTML = "";
+
+
+    /* No Products */
 
     if (products.length === 0) {
 
@@ -47,24 +54,40 @@ function displayProducts(products) {
         return;
     }
 
+
     noProducts.classList.add("d-none");
 
+
+
+    /* Display Products */
 
     products.forEach(product => {
 
         productsContainer.innerHTML += `
 
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div
+                class="col-12 col-sm-6 col-lg-4 col-xl-3">
 
-                <div class="product-card"
+                <div
+                    class="product-card"
                     onclick="goToDetails(${product.id})">
 
-                    <button 
+
+                    <!-- Wishlist -->
+
+                    <button
                         class="wishlist-btn"
-                        onclick="addToWishlist(${product.id}, this); 
-                            event.stopPropagation();">
+                        onclick="
+                            addToWishlist(${product.id}, this);
+                            event.stopPropagation();
+                        ">
+
                         ♡
+
                     </button>
+
+
+                    <!-- Product Image -->
 
                     <img
                         src="${product.thumbnail}"
@@ -72,47 +95,84 @@ function displayProducts(products) {
                         alt="${product.title}"
                     >
 
+
+                    <!-- Product Body -->
+
                     <div class="product-body">
 
+
+                        <!-- Category -->
+
                         <span class="badge bg-secondary">
+
                             ${product.category}
+
                         </span>
 
+
+                        <!-- Title -->
+
                         <h5 class="product-title mt-3">
+
                             ${product.title}
+
                         </h5>
 
+
+                        <!-- Description -->
+
                         <p class="product-description">
+
                             ${product.description}
+
                         </p>
 
+
+                        <!-- Rating -->
+
                         <div class="rating mb-2">
+
                             ⭐⭐⭐⭐⭐
+
                             <span class="text-muted">
+
                                 ${product.rating}
+
                             </span>
+
                         </div>
 
-                        <div class="d-flex justify-content-between mb-3">
+
+                        <!-- Price -->
+
+                        <div
+                            class="d-flex justify-content-between mb-3">
 
                             <span class="product-price">
+
                                 $${product.price}
+
                             </span>
 
+
                             <span>
+
                                 ${product.stock} left
+
                             </span>
 
                         </div>
 
-                        <a
-                            href="product-details.html?id=${product.id}"
+
+                        <!-- View Details -->
+
+                        <button
                             class="btn btn-dark details-btn">
 
                             View Details
-                            
 
-                        </a>
+                        </button>
+
 
                     </div>
 
@@ -121,52 +181,19 @@ function displayProducts(products) {
             </div>
 
         `;
+
     });
+
 }
 
-function addToWishlist(id, button) {
-
-    let wishlist =
-        JSON.parse(localStorage.getItem("wishlist")) || [];
 
 
-    if (wishlist.includes(id)) {
+/* ================= Create Categories ================= */
 
-        // Remove from wishlist
-        wishlist = wishlist.filter(item => item !== id);
-
-        button.innerHTML = "♡";
-        button.classList.remove("active");
-
-    } else {
-
-        // Add to wishlist
-        wishlist.push(id);
-
-        button.innerHTML = "♥";
-        button.classList.add("active");
-    }
-
-
-    localStorage.setItem(
-        "wishlist",
-        JSON.stringify(wishlist)
-    );
-}
-
-window.addToWishlist = addToWishlist;
-
-
-function goToDetails(id) {
-    window.location.href = `product-details.html?id=${id}`;
-}
-
-window.goToDetails = goToDetails;
-
-// Create Categories
 function createCategories() {
 
     let categories = [];
+
 
     allProducts.forEach(product => {
 
@@ -182,60 +209,169 @@ function createCategories() {
     categories.forEach(category => {
 
         categorySelect.innerHTML += `
+
             <option value="${category}">
+
                 ${category}
+
             </option>
+
         `;
 
     });
+
 }
 
 
-// Category Filter
-categorySelect.addEventListener("change", async function () {
 
-    let category = categorySelect.value;
+/* ================= Category Filter ================= */
+
+categorySelect.addEventListener(
+    "change",
+    async function () {
+
+        let category =
+            categorySelect.value;
 
 
-    if (category === "all") {
+        /* All Categories */
 
-        displayProducts(allProducts);
+        if (category === "all") {
 
-    } else {
+            displayProducts(allProducts);
+
+            return;
+
+        }
+
+
+        /* Specific Category */
 
         let products =
             await getProductByCategory(category);
 
+
         displayProducts(products);
 
     }
-
-});
-
-
-// Search
-searchForm.addEventListener("submit", async function (e) {
-
-    e.preventDefault();
-
-    let text = searchInput.value.trim();
+);
 
 
-    if (text === "") {
 
-        displayProducts(allProducts);
+/* ================= Search ================= */
 
-        return;
+searchForm.addEventListener(
+    "submit",
+    async function (e) {
+
+        e.preventDefault();
+
+
+        let text =
+            searchInput.value.trim();
+
+
+        /* Empty Search */
+
+        if (text === "") {
+
+            displayProducts(allProducts);
+
+            return;
+
+        }
+
+
+        /* Search API */
+
+        let products =
+            await searchAboutProduct(text);
+
+
+        displayProducts(products);
+
+    }
+);
+
+
+
+/* ================= Wishlist ================= */
+
+function addToWishlist(id, button) {
+
+    let wishlist =
+        JSON.parse(
+            localStorage.getItem("wishlist")
+        ) || [];
+
+
+    /* Product already exists */
+
+    if (wishlist.includes(id)) {
+
+        /* Remove Product */
+
+        wishlist =
+            wishlist.filter(
+                item => item !== id
+            );
+
+
+        /* Change Heart */
+
+        button.innerHTML = "♡";
+
+        button.classList.remove("active");
+
     }
 
 
-    let products =
-        await searchAboutProduct(text);
+    /* Product doesn't exist */
 
-    displayProducts(products);
+    else {
 
-});
+        /* Add Product */
+
+        wishlist.push(id);
 
 
-// Start
+        /* Change Heart */
+
+        button.innerHTML = "♥";
+
+        button.classList.add("active");
+
+    }
+
+
+    /* Save Wishlist */
+
+    localStorage.setItem(
+        "wishlist",
+        JSON.stringify(wishlist)
+    );
+
+}
+
+
+
+/* ================= Go To Product Details ================= */
+
+function goToDetails(id) {
+
+    window.location.href =
+        `product-details.html?id=${id}`;
+
+}
+
+window.addToWishlist =
+    addToWishlist;
+
+window.goToDetails =
+    goToDetails;
+
+
+
+/* ================= Start ================= */
+
 loadProducts();
