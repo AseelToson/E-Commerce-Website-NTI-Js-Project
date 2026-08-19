@@ -279,11 +279,11 @@ function createCategories() {
 
         categorySelect.innerHTML += `
 
-        < option value = "${category}" >
+        <option value = "${category}" >
 
             ${category}
 
-            </option >
+            </option>
 
         `;
 
@@ -306,8 +306,11 @@ categorySelect.addEventListener(
         /* All Categories */
 
         if (category === "all") {
+            currentProducts = allProducts
+            currentPage = 1
 
-            displayProducts(allProducts);
+
+            displayProducts(currentProducts);
 
             return;
 
@@ -319,8 +322,9 @@ categorySelect.addEventListener(
         let products =
             await getProductByCategory(category);
 
-
-        displayProducts(products);
+        currentProducts = products
+        currentPage = 1
+        displayProducts(currentProducts);
 
     }
 );
@@ -429,7 +433,7 @@ function addToWishlist(id, button) {
 function goToDetails(id) {
 
     window.location.href =
-        `product - details.html ? id = ${id} `;
+        `product-details.html?id=${id}`;
 
 }
 
