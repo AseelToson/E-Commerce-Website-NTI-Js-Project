@@ -1,5 +1,6 @@
-import { currentUserEmail } from "./user.js";
-
+import { currentUserEmail } from "./some.js";
+import { getProducts } from "./api.js";
+import { createProductCard } from "./productCard.js";
 
 /* ================= Wishlist Key ================= */
 
@@ -79,6 +80,7 @@ export function toggleWishlist(id) {
     if (isInWishlist(id)) {
 
         removeFromWishlist(id);
+        displayWishlist()
 
         return false;
 
@@ -88,4 +90,67 @@ export function toggleWishlist(id) {
     addToWishlist(id);
 
     return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+const wishlistContainer =
+    document.getElementById("wishlistContainer");
+
+async function displayWishlist() {
+
+    const wishlist = getWishlist();
+
+    const products = await getProducts();
+
+    const wishlistProducts =
+        products.filter(product =>
+            wishlist.includes(product.id)
+        );
+
+    wishlistContainer.innerHTML = "";
+
+    if (wishlistProducts.length === 0) {
+
+        wishlistContainer.innerHTML = `
+            <div class="text-center">
+                <h3>Your wishlist is empty</h3>
+                <a href="../Pages/products.html"
+                   class="btn btn-danger mt-3">
+                    Continue Shopping
+                </a>
+            </div>
+        `;
+
+        return;
+    }
+
+    wishlistProducts.forEach(product => {
+
+        const card = createProductCard(product, {
+
+            showDescription: true,
+            showStock: true,
+            showWishlist: true,
+            showAddToCart: true
+
+        });
+
+        wishlistContainer.appendChild(card);
+
+    });
+}
+
+if (wishlistContainer) {
+    displayWishlist();
 }

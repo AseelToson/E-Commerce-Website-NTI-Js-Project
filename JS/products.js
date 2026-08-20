@@ -1,9 +1,11 @@
+
 import {
     getProducts,
     getProductByCategory,
     searchAboutProduct,
     getAllCategories
 } from "./api.js";
+
 
 import { createProductCard } from "./productCard.js";
 
@@ -104,7 +106,8 @@ function displayProducts() {
                         showWishlist: true,
                         showAddToCart: true,
                         showQuantity: false,
-                        showDelete: false
+                        showDelete: false,
+                        showOffer: true
                     }
                 );
 
@@ -289,10 +292,11 @@ async function createCategories() {
 categorySelect.addEventListener(
     "change",
     async () => {
+       
 
         const category =
             categorySelect.value;
-
+ console.log("Selected category:", category);
 
         if (category === "all") {
 
@@ -311,6 +315,8 @@ categorySelect.addEventListener(
             await getProductByCategory(
                 category
             );
+            
+            console.log("Products:", products);
 
 
         currentProducts =
@@ -324,45 +330,35 @@ categorySelect.addEventListener(
 
 
 /* ================= Search ================= */
+if (searchForm) {
+    searchForm.addEventListener(
+        "submit",
+        async event => {
 
-searchForm.addEventListener(
-    "submit",
-    async event => {
+            event.preventDefault();
 
-        event.preventDefault();
+            const text =
+                searchInput.value.trim();
 
+            if (text === "") {
 
-        const text =
-            searchInput.value.trim();
+                currentProducts = allProducts;
+                currentPage = 1;
+                displayProducts();
 
+                return;
+            }
 
-        if (text === "") {
+            const products =
+                await searchAboutProduct(text);
 
-            currentProducts =
-                allProducts;
-
+            currentProducts = products;
             currentPage = 1;
 
             displayProducts();
-
-            return;
         }
-
-
-        const products =
-            await searchAboutProduct(
-                text
-            );
-
-
-        currentProducts =
-            products;
-
-        currentPage = 1;
-
-        displayProducts();
-    }
-);
+    );
+}
 
 
 /* ================= Start ================= */

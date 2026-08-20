@@ -40,7 +40,7 @@ export async function getProductByCategory(category) {
 export async function getAllCategories() {
     const response=await fetch(`${API_URL}/categories`);
     const data=await response.json();
-    return data.map(ele=>ele.name);
+    return data.map(ele=>ele.slug);
     
 }
 //  console.log(getAllCategories());

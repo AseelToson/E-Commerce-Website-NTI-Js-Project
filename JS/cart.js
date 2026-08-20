@@ -207,8 +207,8 @@
 
 
 
-
-import { currentUserEmail } from "./user.js";
+// import { createProductCard } from "./productCard.js";
+import { currentUserEmail } from "./some.js";
 
 
 /* ================= Cart Key ================= */
@@ -242,10 +242,14 @@ export function saveCart(cart) {
 
 export function addToCart(product) {
 
-    const cart = getCart();
+    const cart =
+        getCart();
+
 
     const existingProduct =
-        cart.find(item => item.id === product.id);
+        cart.find(
+            item => item.id === product.id
+        );
 
 
     if (existingProduct) {
@@ -261,6 +265,7 @@ export function addToCart(product) {
 
     }
 
+
     saveCart(cart);
 }
 
@@ -269,10 +274,14 @@ export function addToCart(product) {
 
 export function increaseQuantity(id) {
 
-    const cart = getCart();
+    const cart =
+        getCart();
+
 
     const product =
-        cart.find(item => item.id === id);
+        cart.find(
+            item => item.id === id
+        );
 
 
     if (product) {
@@ -280,6 +289,7 @@ export function increaseQuantity(id) {
         product.quantity++;
 
     }
+
 
     saveCart(cart);
 }
@@ -289,13 +299,18 @@ export function increaseQuantity(id) {
 
 export function decreaseQuantity(id) {
 
-    const cart = getCart();
+    const cart =
+        getCart();
+
 
     const product =
-        cart.find(item => item.id === id);
+        cart.find(
+            item => item.id === id
+        );
 
 
     if (!product) {
+
         return;
     }
 
@@ -317,10 +332,15 @@ export function decreaseQuantity(id) {
 
 export function removeFromCart(id) {
 
-    const cart = getCart();
+    const cart =
+        getCart();
+
 
     const updatedCart =
-        cart.filter(item => item.id !== id);
+        cart.filter(
+            item => item.id !== id
+        );
+
 
     saveCart(updatedCart);
 }
@@ -338,35 +358,18 @@ export function clearCart() {
 
 export function getCartTotal() {
 
-    const cart = getCart();
+    const cart =
+        getCart();
+
 
     return cart.reduce(
-        (total, product) =>
-            total + product.price * product.quantity,
+        (total, product) => {
+
+            return total +
+                product.price *
+                product.quantity;
+
+        },
         0
     );
 }
-
-
-
-
-
-
-const card =
-    createProductCard(product, {
-
-        showDescription: false,
-
-        showStock: false,
-
-        showWishlist: false,
-
-        showAddToCart: false,
-
-        showQuantity: true,
-
-        showDelete: true
-
-    });
-
-cartContainer.appendChild(card);

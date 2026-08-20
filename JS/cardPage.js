@@ -7,18 +7,23 @@ import {
     clearCart
 } from "./cart.js";
 
+
 import { createProductCard } from "./productCard.js";
 
+
+/* ================= Elements ================= */
 
 const cartContainer =
     document.getElementById(
         "cartContainer"
     );
 
+
 const totalPrice =
     document.getElementById(
         "totalPrice"
     );
+
 
 const checkoutBtn =
     document.getElementById(
@@ -37,6 +42,8 @@ function displayCart() {
     cartContainer.innerHTML = "";
 
 
+    /* ================= Empty Cart ================= */
+
     if (cart.length === 0) {
 
         cartContainer.innerHTML = `
@@ -49,10 +56,9 @@ function displayCart() {
 
                 <a
                     href="../Pages/index.html"
-                    class="btn btn-primary mt-3 mb-3">
-
+                    class="btn btn-primary mt-3"
+                >
                     Continue Shopping
-
                 </a>
 
             </div>
@@ -68,6 +74,8 @@ function displayCart() {
     }
 
 
+    /* ================= Products ================= */
+
     cart.forEach(
         product => {
 
@@ -76,10 +84,15 @@ function displayCart() {
                     product,
                     {
                         showDescription: false,
+
                         showStock: false,
+
                         showWishlist: false,
+
                         showAddToCart: false,
+
                         showQuantity: true,
+
                         showDelete: true
                     }
                 );
@@ -88,25 +101,30 @@ function displayCart() {
             cartContainer.appendChild(
                 card
             );
+
         }
     );
 
+
+    /* ================= Total ================= */
 
     totalPrice.textContent =
         getCartTotal().toFixed(2);
 }
 
 
-/* ================= Quantity ================= */
+/* ================= Quantity Change ================= */
 
 document.addEventListener(
     "cartQuantityChange",
     event => {
 
-        const {
-            id,
-            action
-        } = event.detail;
+        const id =
+            event.detail.id;
+
+
+        const action =
+            event.detail.action;
 
 
         if (action === "increase") {
@@ -130,9 +148,12 @@ document.addEventListener(
     "cartDelete",
     event => {
 
-        removeFromCart(
-            event.detail.id
-        );
+        const id =
+            event.detail.id;
+
+
+        removeFromCart(id);
+
 
         displayCart();
     }
@@ -169,6 +190,7 @@ checkoutBtn.addEventListener(
 
 
         clearCart();
+
 
         displayCart();
     }

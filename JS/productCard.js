@@ -2,205 +2,149 @@ import { createStars } from "./some.js";
 
 import { addToCart } from "./cart.js";
 
-import {
-    toggleWishlist,
-    isInWishlist
-} from "./wishlist.js";
+import { toggleWishlist, isInWishlist } from "./wishlist.js";
 
+import { increaseQuantity, decreaseQuantity,removeFromCart } from "./cart.js";
 
 /* =====================================================
    Create Product Card
 ===================================================== */
 
 export function createProductCard(product, options = {}) {
+  const {
+    showDescription = true,
 
-    const {
+    showStock = true,
 
-        showDescription = true,
+    showWishlist = true,
 
-        showStock = true,
+    showAddToCart = true,
 
-        showWishlist = true,
+    showQuantity = false,
 
-        showAddToCart = true,
+    showDelete = false,
+    showOffer=true
+  } = options;
 
-        showQuantity = false,
+  /* ================= cardContainer ================= */
 
-        showDelete = false
+  const cardContainer = document.createElement("div");
 
-    } = options;
+  cardContainer.className = "col-12 col-sm-6 col-lg-4 col-xl-3";
 
+  /* ================= Card ================= */
 
-    /* ================= Column ================= */
+  const card = document.createElement("div");
 
-    const column =
-        document.createElement("div");
+  card.className = "product-card";
 
-    column.className =
-        "col-12 col-sm-6 col-lg-4 col-xl-3";
+  /* ================= Card Click ================= */
 
+  card.addEventListener("click", () => {
+    window.location.href = `product-details.html?id=${product.id}`;
+  });
 
-    /* ================= Card ================= */
+  /* ================= Wishlist ================= */
 
-    const card =
-        document.createElement("div");
+//   console.log(product.discountPercentage);
+  if (showOffer&&product.discountPercentage > 10) {
 
-    card.className =
-        "product-card";
+    const discount = document.createElement("span");
 
+    discount.className = "discount-badge";
 
-    /* ================= Card Click ================= */
+    discount.textContent =
+        `-${Math.round(product.discountPercentage)}%`;
 
-    card.addEventListener(
-        "click",
-        () => {
+    card.appendChild(discount);
+}
+  if (showWishlist) {
+    const wishlistButton = document.createElement("button");
 
-            window.location.href =
-                `product-details.html?id=${product.id}`;
-        }
-    );
+    wishlistButton.className = "wishlist-btn";
 
+    const active = isInWishlist(product.id);
 
-    /* ================= Wishlist ================= */
+    wishlistButton.innerHTML = active ? "♥" : "♡";
 
-    if (showWishlist) {
-
-        const wishlistButton =
-            document.createElement("button");
-
-        wishlistButton.className =
-            "wishlist-btn";
-
-
-        const active =
-            isInWishlist(product.id);
-
-
-        wishlistButton.innerHTML =
-            active ? "♥" : "♡";
-
-
-        if (active) {
-            wishlistButton.classList.add("active");
-        }
-
-
-        wishlistButton.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-
-                const isAdded =
-                    toggleWishlist(product.id);
-
-
-                wishlistButton.innerHTML =
-                    isAdded ? "♥" : "♡";
-
-
-                wishlistButton.classList.toggle(
-                    "active",
-                    isAdded
-                );
-            }
-        );
-
-
-        card.appendChild(
-            wishlistButton
-        );
+    if (active) {
+      wishlistButton.classList.add("active");
     }
 
+    wishlistButton.addEventListener("click", (event) => {
+      event.stopPropagation();
 
-    /* ================= Image ================= */
+      const isAdded = toggleWishlist(product.id);
 
-    const image =
-        document.createElement("img");
+      wishlistButton.innerHTML = isAdded ? "♥" : "♡";
 
-    image.src =
-        product.thumbnail;
+      if (isAdded) {
+        wishlistButton.classList.add("active");
+      } else {
+        wishlistButton.classList.remove("active");
+      }
+    });
 
-    image.alt =
-        product.title;
+    card.appendChild(wishlistButton);
+  }
 
-    image.className =
-        "product-image";
+  /* ================= Image ================= */
 
+  const image = document.createElement("img");
 
-    card.appendChild(image);
+  image.src = product.thumbnail;
 
+  image.alt = product.title;
 
-    /* ================= Body ================= */
+  image.className = "product-image";
 
-    const body =
-        document.createElement("div");
+  card.appendChild(image);
 
-    body.className =
-        "product-body";
+  /* ================= Body ================= */
 
+  const body = document.createElement("div");
 
-    /* ================= Category ================= */
+  body.className = "product-body";
 
-    const category =
-        document.createElement("span");
+  /* ================= Category ================= */
 
-    category.className =
-        "badge bg-secondary";
+  const category = document.createElement("span");
 
-    category.textContent =
-        product.category;
+  category.className = "badge bg-secondary";
 
+  category.textContent = product.category;
 
-    body.appendChild(category);
+  body.appendChild(category);
 
+  /* ================= Title ================= */
 
-    /* ================= Title ================= */
+  const title = document.createElement("h5");
 
-    const title =
-        document.createElement("h5");
+  title.className = "product-title mt-3";
 
-    title.className =
-        "product-title mt-3";
+  title.textContent = product.title;
 
-    title.textContent =
-        product.title;
+  body.appendChild(title);
 
+  /* ================= Description ================= */
 
-    body.appendChild(title);
+  if (showDescription) {
+    const description = document.createElement("p");
 
+    description.className = "product-description";
 
-    /* ================= Description ================= */
+    description.textContent = product.description;
 
-    if (showDescription) {
+    body.appendChild(description);
+  }
 
-        const description =
-            document.createElement("p");
+  /* ================= Rating ================= */
 
-        description.className =
-            "product-description";
+  const rating = document.createElement("div");
 
-        description.textContent =
-            product.description;
+  rating.className = "rating mb-2";
 
-
-        body.appendChild(
-            description
-        );
-    }
-
-
-    /* ================= Rating ================= */
-
-    const rating =
-        document.createElement("div");
-
-    rating.className =
-        "rating mb-2";
-
-
-    rating.innerHTML = `
+  rating.innerHTML = `
 
         ${createStars(product.rating)}
 
@@ -210,257 +154,153 @@ export function createProductCard(product, options = {}) {
 
     `;
 
+  body.appendChild(rating);
 
-    body.appendChild(rating);
+  /* ================= Price + Stock ================= */
 
+  const priceContainer = document.createElement("div");
 
-    /* ================= Price + Stock ================= */
+  priceContainer.className = "d-flex justify-content-between mb-3";
 
-    const priceContainer =
-        document.createElement("div");
+  const price = document.createElement("span");
 
-    priceContainer.className =
-        "d-flex justify-content-between mb-3";
+  price.className = "product-price";
 
+  price.textContent = `$${product.price}`;
 
-    const price =
-        document.createElement("span");
+  priceContainer.appendChild(price);
 
-    price.className =
-        "product-price";
+  if (showStock) {
+    const stock = document.createElement("span");
 
-    price.textContent =
-        `$${product.price}`;
+    stock.textContent = `${product.stock} left`;
 
+    priceContainer.appendChild(stock);
+  }
 
-    priceContainer.appendChild(
-        price
-    );
+  body.appendChild(priceContainer);
 
+  /* ================= Actions ================= */
 
-    if (showStock) {
+  const actions = document.createElement("div");
 
-        const stock =
-            document.createElement("span");
-
-        stock.textContent =
-            `${product.stock} left`;
-
-
-        priceContainer.appendChild(
-            stock
-        );
-    }
+  // actions.className =
+  //     "product-actions";
+  actions.className = "d-flex justify-content-between mb-3";
+//   actions.className = "product-actions";
 
 
-    body.appendChild(
-        priceContainer
-    );
-
-
-    /* ================= Actions ================= */
-
-    const actions =
-        document.createElement("div");
-
-    actions.className =
-        "product-actions";
-
-
-    /* =====================================================
+  /* =====================================================
        Add To Cart
     ===================================================== */
 
-    if (showAddToCart) {
+  if (showAddToCart) {
+    const addButton = document.createElement("button");
 
-        const addButton =
-            document.createElement("button");
+    addButton.className = "btn btn-danger";
 
+    addButton.textContent = "Add to Cart";
 
-        addButton.className =
-            "btn btn-danger details-btn";
+    addButton.addEventListener("click", (event) => {
+      event.stopPropagation();
 
+      addToCart(product);
 
-        addButton.textContent =
-            "Add to Cart";
+      addButton.textContent = "Added ✓";
+    });
 
+    actions.appendChild(addButton);
+  }
 
-        addButton.addEventListener(
-            "click",
-            event => {
+  const detailsButton = document.createElement("button");
 
-                event.stopPropagation();
+  detailsButton.className = "btn btn-dark";
 
+  detailsButton.textContent = "datails";
 
-                addToCart(product);
+  detailsButton.addEventListener("click", (event) => {
+    event.stopPropagation();
 
+    // addToCart(product);   //go to details page
+  });
 
-                addButton.textContent =
-                    "Added ✓";
-            }
-        );
+  actions.appendChild(detailsButton);
 
-
-        actions.appendChild(
-            addButton
-        );
-    }
-
-
-    /* =====================================================
+  /* =====================================================
        Quantity
     ===================================================== */
 
-    if (showQuantity) {
+  if (showQuantity) {
+    const quantity = document.createElement("div");
 
-        const quantity =
-            document.createElement("div");
+    quantity.className = "quantity";
 
-        quantity.className =
-            "quantity";
+    const minus = document.createElement("button");
 
+    minus.className = "quantity-btn";
 
-        const minus =
-            document.createElement("button");
+    minus.textContent = "-";
 
-        minus.className =
-            "quantity-btn";
+    const number = document.createElement("span");
 
-        minus.textContent =
-            "-";
+    number.textContent = product.quantity;
 
+    const plus = document.createElement("button");
 
-        const number =
-            document.createElement("span");
+    plus.className = "quantity-btn";
 
-        number.textContent =
-            product.quantity;
+    plus.textContent = "+";
 
+    /* ---------- Minus ---------- */
 
-        const plus =
-            document.createElement("button");
+    plus.addEventListener("click", (event) => {
+      event.stopPropagation(); //وقف انتشار ال click للأب
 
-        plus.className =
-            "quantity-btn";
+      decreaseQuantity(product.id);
+    });
 
-        plus.textContent =
-            "+";
+    /* ---------- Plus ---------- */
 
+    plus.addEventListener("click", (event) => {
+      event.stopPropagation(); //وقف انتشار ال click للأب
 
-        /* ---------- Minus ---------- */
+      increaseQuantity(product.id);
+    });
 
-        minus.addEventListener(
-            "click",
-            event => {
+    quantity.append(minus, number, plus);
 
-                event.stopPropagation();
+    actions.appendChild(quantity);
+  }
 
-
-                document.dispatchEvent(
-                    new CustomEvent(
-                        "cartQuantityChange",
-                        {
-                            detail: {
-                                id: product.id,
-                                action: "decrease"
-                            }
-                        }
-                    )
-                );
-            }
-        );
-
-
-        /* ---------- Plus ---------- */
-
-        plus.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-
-                document.dispatchEvent(
-                    new CustomEvent(
-                        "cartQuantityChange",
-                        {
-                            detail: {
-                                id: product.id,
-                                action: "increase"
-                            }
-                        }
-                    )
-                );
-            }
-        );
-
-
-        quantity.append(
-            minus,
-            number,
-            plus
-        );
-
-
-        actions.appendChild(
-            quantity
-        );
-    }
-
-
-    /* =====================================================
+  /* =====================================================
        Delete
     ===================================================== */
 
-    if (showDelete) {
+  if (showDelete) {
+    const deleteButton = document.createElement("button");
 
-        const deleteButton =
-            document.createElement("button");
+    deleteButton.className = "btn btn-danger";
 
+    deleteButton.textContent = "Delete";
 
-        deleteButton.className =
-            "btn btn-danger";
+    deleteButton.addEventListener("click", (event) => {
 
+    event.stopPropagation();
 
-        deleteButton.textContent =
-            "Delete";
+    removeFromCart(product.id);
 
+});
 
-        deleteButton.addEventListener(
-            "click",
-            event => {
+    actions.appendChild(deleteButton);
+  }
 
-                event.stopPropagation();
+  /* ================= Append ================= */
 
+  body.appendChild(actions);
 
-                document.dispatchEvent(
-                    new CustomEvent(
-                        "cartDelete",
-                        {
-                            detail: {
-                                id: product.id
-                            }
-                        }
-                    )
-                );
-            }
-        );
+  card.appendChild(body);
 
+  cardContainer.appendChild(card);
 
-        actions.appendChild(
-            deleteButton
-        );
-    }
-
-
-    /* ================= Append ================= */
-
-    body.appendChild(actions);
-
-    card.appendChild(body);
-
-    column.appendChild(card);
-
-
-    return column;
+  return cardContainer;
 }
