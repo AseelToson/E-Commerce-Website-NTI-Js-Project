@@ -40,7 +40,7 @@ export async function getProductByCategory(category) {
 export async function getAllCategories() {
     const response=await fetch(`${API_URL}/categories`);
     const data=await response.json();
-    return data.map(ele=>ele.name);
+    return data.map(ele=>ele.slug);
     
 }
 //  console.log(getAllCategories());
@@ -59,7 +59,7 @@ export async function searchAboutProduct(item) {
 /****************** offers (Ahmmed) ******************/
 export async function getOfferProducts() {
 const products=await getProducts();
-const result=products.filter(ele=>{return ele.discountPercentage>0});
+const result=products.filter(ele=>{return ele.discountPercentage>20});
 return result;
 }
 // console.log(getOfferProducts());
