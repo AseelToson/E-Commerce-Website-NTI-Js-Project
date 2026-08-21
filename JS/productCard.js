@@ -212,36 +212,37 @@ export function createProductCard(product, options = {}) {
   // }
 
   if (showAddToCart) {
+
     const addButton = document.createElement("button");
 
     addButton.className = "btn btn-danger";
 
     const cart = getCart();
 
-    const alreadyInCart = cart.some((item) => item.id === product.id);
+    const alreadyInCart = cart.some(
+        item => item.id === product.id
+    );
 
     if (alreadyInCart) {
-      addButton.textContent = "Added ✓";
-      addButton.disabled = true;
+        addButton.textContent = "Added ✓";
+        addButton.disabled = true;
     } else {
-      addButton.textContent = "Add to Cart";
+        addButton.textContent = "Add to Cart";
     }
 
     addButton.addEventListener("click", (event) => {
-      event.stopPropagation();
 
-      if (addButton.disabled) {
-        return;
-      }
+        event.stopPropagation();
 
-      addToCart(product.id);
+        addToCart(product.id);
 
-      addButton.textContent = "Added ✓";
-      addButton.disabled = true;
+        addButton.textContent = "Added ✓";
+        addButton.disabled = true;
+
     });
 
     actions.appendChild(addButton);
-  }
+}
 
   // const detailsButton = document.createElement("button");
 
