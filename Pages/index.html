@@ -12,11 +12,216 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     />
+    <link rel="stylesheet" href="../Css/style.css">
+    <link rel="stylesheet" href="../Css/products.css">
+
     <title>Document</title>
 </head>
 <body>
+
+
+  <section class="home-main">
+  <div class="container-fluid">
+
+    <div class="row g-3">
+
+      <!-- All Categories -->
+      <div class="col-lg-3 col-xl-2">
+
+        <div class="categories-sidebar">
+
+          <div class="categories-header">
+            <span class="material-symbols-outlined">
+              category
+            </span>
+
+            <span>All Categories</span>
+          </div>
+
+          <div id="categoriesContainer">
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="col-lg-9 col-xl-10">
+
+        <div class="hero-banner">
+
+
+          <div
+            id="heroCarousel"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="2000"
+          >
+
+            <div class="carousel-inner">
+
+              <div class="carousel-item active">
+                <img
+                  src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1400&q=80"
+                  alt="Summer Sale"
+                >
+              </div>
+
+              <div class="carousel-item">
+                <img
+                  src="https://imgs.search.brave.com/9DnTpzbwrXcZ51uV9eJ5Z4XSlTcl1r9qCbR9cKEx9J0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS12ZWN0b3Iv/YmxhY2stZnJpZGF5/LWRhcmstc2FsZS1i/YW5uZXItZGVzaWdu/LXRlbXBsYXRlXzEw/MTctMjIyNjQuanBn/P3NlbXQ9YWlzX2h5/YnJpZCZ3PTc0MCZx/PTgw"
+                  alt="Summer Sale"
+                >
+              </div>
+
+              <div class="carousel-item">
+                <img
+                  src="https://imgs.search.brave.com/bZnX3-mAPgYT_-cM69JsptqXXuCLsI6YyHdtv211BUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS12ZWN0b3Iv/YWJzdHJhY3QtZGFy/ay1jb2xvci1ibGFj/ay1mcmlkYXktc2Fs/ZS1iYW5uZXItdGVt/cGxhdGVfMTAxNy0y/MTkxMC5qcGc_c2Vt/dD1haXNfaHlicmlk/Jnc9NzQwJnE9ODA"
+                  alt="Summer Sale"
+                >
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="hero-content">
+
+            <span class="hero-small-text">
+              SUMMER SALE
+            </span>
+
+            <h1>
+              Up to <span>50% OFF</span>
+            </h1>
+
+            <p>
+              Discover amazing deals and enjoy the best prices.
+            </p>
+
+            <a href="./offers.html" class="hero-btn">
+              Shop Now
+            </a>
+
+          </div>
+
+
+          <div class="carousel-indicators hero-indicators">
+
+            <button
+              type="button"
+              data-bs-target="#heroCarousel"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1">
+            </button>
+
+            <button
+              type="button"
+              data-bs-target="#heroCarousel"
+              data-bs-slide-to="1"
+              aria-label="Slide 2">
+            </button>
+
+            <button
+              type="button"
+              data-bs-target="#heroCarousel"
+              data-bs-slide-to="2"
+              aria-label="Slide 3">
+            </button>
+
+          </div>
+          
+
+        </div>
+        <div class="features-bar p-3 mt-3 rounded-3" style="background-color: #f8f9fa;">
+              <div class="row g-3">
+
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-danger fs-2">local_shipping</span>
+                    <div>
+                      <h6 class="fw-bold mb-0" style="font-size: 0.9rem;">Free Shipping</h6>
+                      <small class="text-muted">On all orders over $50</small>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-danger fs-2">verified</span>
+                    <div>
+                      <h6 class="fw-bold mb-0" style="font-size: 0.9rem;">Best Price</h6>
+                      <small class="text-muted" >We guarantee best price</small>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-danger fs-2">autorenew</span>
+                    <div>
+                      <h6 class="fw-bold mb-0" style="font-size: 0.9rem;">Easy Returns</h6>
+                      <small class="text-muted">30 days return policy</small>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-danger fs-2">verified_user</span>
+                    <div>
+                      <h6 class="fw-bold mb-0" style="font-size: 0.9rem;">Secure Payment</h6>
+                      <small class="text-muted" >100% secure payment</small>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        
+
+      </div>
+      
+
+    </div>
+
+  </div>
+
+  
+</section>
+
+
+
+
+<!-- products -->
+ <section class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 style="color: rgba(15, 15, 15, 0.751);">Featured Products</h2>
+
+        <a href="./products.html" class="btn btn-danger">
+            See More
+        </a>
+    </div>
+
+    <div id="homeProducts" class="row g-3 home-products"></div>
+
+</section>
+
+
+
+
     <script type="module" src="../JS/api.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../JS/general.js"></script>

@@ -59,7 +59,7 @@ export async function searchAboutProduct(item) {
 /****************** offers (Ahmmed) ******************/
 export async function getOfferProducts() {
 const products=await getProducts();
-const result=products.filter(ele=>{return ele.discountPercentage>20});
+const result=products.filter(ele=>{return ele.discountPercentage>10});
 return result;
 }
 // console.log(getOfferProducts());

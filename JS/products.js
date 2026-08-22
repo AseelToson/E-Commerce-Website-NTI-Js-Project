@@ -8,7 +8,7 @@ import {
 
 
 import { createProductCard } from "./productCard.js";
-
+import { createPagination } from "./some.js";
 
 const productsContainer =
     document.getElementById("productsContainer");
@@ -16,12 +16,10 @@ const productsContainer =
 const categorySelect =
     document.getElementById("categorySelect");
 
-// const searchForm =
-//     document.getElementById("searchForm");
 
-// const searchInput =
-//     document.getElementById("searchInput");
+const params = new URLSearchParams(window.location.search);
 
+const category = params.get("category");
 const noProducts =
     document.getElementById("noProducts");
 
@@ -40,17 +38,22 @@ const productsPerPage = 20;
 
 /* ================= Load Products ================= */
 
- async function loadProducts() {
+async function loadProducts() {
 
-    allProducts =
-        await getProducts();
+    allProducts = await getProducts();
 
-    currentProducts =
-        allProducts;
+    currentProducts = allProducts;
+
+    await createCategories();
+
+    if (category) {
+
+        currentProducts =
+            await getProductByCategory(category);
+
+    }
 
     displayProducts();
-
-    createCategories();
 }
 
 
@@ -119,114 +122,18 @@ function displayProducts() {
     );
 
 
-    createPagination();
+    createPagination(
+    currentProducts,
+    productsPerPage,
+    currentPage,
+    pagination,
+    changePage
+);
 }
 
 
 /* ================= Pagination ================= */
 
-function createPagination() {
-
-    const totalPages =
-        Math.ceil(
-            currentProducts.length /
-            productsPerPage
-        );
-
-
-    pagination.innerHTML = "";
-
-
-    /* Previous */
-
-    const previous =
-        document.createElement("button");
-
-    previous.className =
-        "btn btn-danger mx-1";
-
-    previous.textContent =
-        "Previous";
-
-    previous.disabled =
-        currentPage === 1;
-
-
-    previous.addEventListener(
-        "click",
-        () => changePage(
-            currentPage - 1
-        )
-    );
-
-
-    pagination.appendChild(
-        previous
-    );
-
-
-    /* Pages */
-
-    for (
-        let i = 1;
-        i <= totalPages;
-        i++
-    ) {
-
-        const button =
-            document.createElement("button");
-
-
-        button.className =
-            "btn btn-danger mx-1";
-
-
-        button.textContent =
-            i;
-
-
-        button.addEventListener(
-            "click",
-            () => changePage(i)
-        );
-
-
-        pagination.appendChild(
-            button
-        );
-    }
-
-
-    /* Next */
-
-    const next =
-        document.createElement("button");
-
-
-    next.className =
-        "btn btn-danger mx-1";
-
-
-    next.textContent =
-        "Next";
-
-
-    next.disabled =
-        currentPage === totalPages;
-
-
-    next.addEventListener(
-        "click",
-        () => changePage(
-            currentPage + 1
-        )
-    );
-
-
-    pagination.appendChild(
-        next
-    );
-}
 
 
 /* ================= Change Page ================= */
@@ -247,7 +154,7 @@ function changePage(page) {
 
 /* ================= Categories ================= */
 
-async function createCategories() {
+export async function createCategories() {
 
     const categories =
         await getAllCategories();
@@ -329,44 +236,9 @@ categorySelect.addEventListener(
 );
 
 
-/* ================= Search ================= */
-// if (searchForm) {
-//     searchForm.addEventListener(
-//         "submit",
-//         async event => {
-
-//             event.preventDefault();
-
-//             const text =
-//                 searchInput.value.trim();
-
-//             if (text === "") {
-
-//                 currentProducts = allProducts;
-//                 currentPage = 1;
-//                 displayProducts();
-
-//                 return;
-//             }
-
-//             const products =
-//                 await searchAboutProduct(text);
-
-//             currentProducts = products;
-//             currentPage = 1;
-
-//             displayProducts();
-//         }
-//     );
-// }
-
-
 /* ================= Start ================= */
 
-//  ladProducts();
-/* ================= Start ================= */
-
-const params = new URLSearchParams(window.location.search);
+// const params = new URLSearchParams(window.location.search);
 const searchText = params.get("search");
 
 loadProducts().then(() => {
