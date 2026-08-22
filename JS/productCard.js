@@ -13,15 +13,10 @@ import { increaseQuantity, decreaseQuantity, removeFromCart } from "./cart.js";
 export function createProductCard(product, options = {}) {
   const {
     showDescription = true,
-
     showStock = true,
-
     showWishlist = true,
-
     showAddToCart = true,
-
     showQuantity = false,
-
     showDelete = false,
     showOffer = true,
     showDetails = true,
@@ -90,13 +85,9 @@ export function createProductCard(product, options = {}) {
   /* ================= Image ================= */
 
   const image = document.createElement("img");
-
   image.src = product.thumbnail;
-
   image.alt = product.title;
-
   image.className = "product-image";
-
   card.appendChild(image);
 
   /* ================= Body ================= */
@@ -108,11 +99,8 @@ export function createProductCard(product, options = {}) {
   /* ================= Category ================= */
 
   const category = document.createElement("span");
-
   category.className = "badge bg-secondary";
-
   category.textContent = product.category;
-
   body.appendChild(category);
 
   /* ================= Title ================= */
@@ -158,7 +146,6 @@ export function createProductCard(product, options = {}) {
   /* ================= Price + Stock ================= */
 
   const priceContainer = document.createElement("div");
-
   priceContainer.className = "d-flex justify-content-between mb-3";
 
   const price = document.createElement("span");
@@ -193,71 +180,33 @@ export function createProductCard(product, options = {}) {
        Add To Cart
     ===================================================== */
 
-  // if (showAddToCart) {
-  //   const addButton = document.createElement("button");
-
-  //   addButton.className = "btn btn-danger";
-
-  //   addButton.textContent = "Add to Cart";
-
-  //   addButton.addEventListener("click", (event) => {
-  //     event.stopPropagation();
-
-  //     addToCart(product.id);
-
-  //     addButton.textContent = "Added ✓";
-  //   });
-
-  //   actions.appendChild(addButton);
-  // }
-
   if (showAddToCart) {
-
     const addButton = document.createElement("button");
 
     addButton.className = "btn btn-danger";
 
     const cart = getCart();
 
-    const alreadyInCart = cart.some(
-        item => item.id === product.id
-    );
+    const alreadyInCart = cart.some((item) => item.id === product.id);
 
     if (alreadyInCart) {
-        addButton.textContent = "Added ✓";
-        addButton.disabled = true;
+      addButton.textContent = "Added ✓";
+      addButton.disabled = true;
     } else {
-        addButton.textContent = "Add to Cart";
+      addButton.textContent = "Add to Cart";
     }
 
     addButton.addEventListener("click", (event) => {
+      event.stopPropagation();
 
-        event.stopPropagation();
+      addToCart(product.id);
 
-        addToCart(product.id);
-
-        addButton.textContent = "Added ✓";
-        addButton.disabled = true;
-
+      addButton.textContent = "Added ✓";
+      addButton.disabled = true;
     });
 
     actions.appendChild(addButton);
-}
-
-  // const detailsButton = document.createElement("button");
-
-  // detailsButton.className = "btn btn-dark";
-  // detailsButton.classList.add = "details-btn";
-
-  // detailsButton.textContent = "datails";
-
-  // detailsButton.addEventListener("click", (event) => {
-  //   event.stopPropagation();
-
-  //   // addToCart(product);   //go to details page
-  // });
-
-  // actions.appendChild(detailsButton);
+  }
 
   if (showDetails) {
     const detailsButton = document.createElement("button");
@@ -266,7 +215,8 @@ export function createProductCard(product, options = {}) {
     detailsButton.textContent = "Details";
 
     detailsButton.addEventListener("click", (event) => {
-      event.stopPropagation();
+      event.stopPropagation(); // go to details page
+      window.location.href = `product-details.html?id=${product.id}`;
     });
 
     actions.appendChild(detailsButton);
@@ -354,7 +304,13 @@ export function createProductCard(product, options = {}) {
       cardContainer.remove();
       const currentTotal = parseFloat(totalPrice.textContent.replace("$", ""));
 
-      totalPrice.textContent = `$${(currentTotal - product.price).toFixed(2)}`;
+      const cart = getCart();
+
+      if (cart.length === 0) {
+        totalPrice.textContent = "$0.00";
+      } else {
+        totalPrice.textContent = `$${(currentTotal - product.price * product.quantity).toFixed(2)}`;
+      }
     });
 
     actions.appendChild(deleteButton);

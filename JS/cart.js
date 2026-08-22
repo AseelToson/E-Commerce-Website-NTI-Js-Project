@@ -1,13 +1,17 @@
-
 import { currentUserEmail } from "./some.js";
 import { getProducts } from "./api.js";
-// import { createProductCard } from "./productCard.js";
 
-/* ================= Wishlist Key ================= */
+import { createProductCard } from "./productCard.js";
+
+const totalPrice = document.getElementById("totalPrice");
+
+const checkoutBtn = document.getElementById("checkoutBtn");
+
+/* ================= cart Key ================= */
 
 const cartKey = `cart_${currentUserEmail}`;
 
-/* ================= Get Wishlist ================= */
+/* ================= Get cart ================= */
 
 export function getCart() {
   return JSON.parse(localStorage.getItem(cartKey)) || [];
@@ -19,33 +23,15 @@ function saveCart(cart) {
   localStorage.setItem(cartKey, JSON.stringify(cart));
 }
 
-/* ================= Check Product ================= */
-
-// export function isInWishlist(id) {
-
-//     const wishlist = getWishlist();
-
-//     return wishlist.includes(id);
-// }
-
 /* ================= Add ================= */
 
 export function addToCart(id) {
   const cart = getCart();
-
-  const existingProduct = cart.find((item) => item.id === id);
-
-  if (existingProduct) {
-    existingProduct.quantity++;
-  } else {
-    cart.push({
-      id: id,
-      quantity: 1,
-    });
-  }
-
+  cart.push({
+    id: id,
+    quantity: 1,
+  });
   saveCart(cart);
-  console.log("Cart after adding:", cart);
 }
 
 export function increaseQuantity(id) {
@@ -58,14 +44,12 @@ export function increaseQuantity(id) {
   }
 
   saveCart(cart);
+  //  return cart;
 }
 
 export function decreaseQuantity(id) {
   const cart = getCart();
-
   const product = cart.find((item) => item.id === id);
-
-  if (!product) return;
 
   if (product.quantity > 1) {
     product.quantity--;
@@ -73,46 +57,72 @@ export function decreaseQuantity(id) {
     removeFromCart(id);
     return;
   }
-
   saveCart(cart);
 }
 
 /* ================= Remove ================= */
 
 export function removeFromCart(id) {
+  const cart = getCart();
 
-    const cart = getCart();
+  const updatedCart = cart.filter((item) => item.id !== id);
 
-    const updatedCart =
-        cart.filter(item => item.id !== id);
-
-    saveCart(updatedCart);
+  saveCart(updatedCart);
 }
 
 export function clearCart() {
-    saveCart([]);
+  saveCart([]);
 }
-/* ================= Toggle ================= */
 
-// export function toggleWishlist(id) {
-//   if (isInWishlist(id)) {
-//     removeFromWishlist(id);
-//     displayWishlist();
+function updateTotal(cart) {
+  const total = cart.reduce((sum, product) => {
+    return sum + product.price * product.quantity;
+  }, 0);
 
-//     return false;
-//   }
+  totalPrice.textContent = `$${total.toFixed(2)}`;
+}
 
-//   addToWishlist(id);
+if (checkoutBtn) {
+  checkoutBtn.addEventListener("click", () => {
+    const cart = getCart();
 
-//   return true;
-// }
+    if (cart.length === 0) {
+      alert("Your cart is empty");
 
-// ////////////
+      return;
+    }
 
+    const total = parseFloat(totalPrice.textContent.replace("$", ""));
+
+    alert(`Order placed successfully!\n\nTotal: $${total.toFixed(2)}`);
+    clearCart();
+
+    displayCart();
+  });
+}
+
+/********************************* display ********************************/
 const cartContainer = document.getElementById("cartContainer");
 
-async function displaycart() {
+async function displayCart() {
   const cart = getCart();
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = `
+      <div class="text-center">
+        <h3>Your cart is empty</h3>
+
+        <a href="../Pages/products.html"
+           class="btn btn-danger mt-3">
+          Continue Shopping
+        </a>
+      </div>
+    `;
+
+    totalPrice.textContent = "$0.00";
+
+    return;
+  }
 
   const products = await getProducts();
 
@@ -120,49 +130,28 @@ async function displaycart() {
     cart.some((item) => item.id === product.id),
   );
 
-  cartContainer.innerHTML = "";
-
-  if (cartProducts.length === 0) {
-    cartContainer.innerHTML = `
-            <div class="text-center">
-                <h3>Your cart is empty</h3>
-                <a href="../Pages/products.html"
-                   class="btn btn-danger mt-3">
-                    Continue Shopping
-                </a>
-            </div>
-        `;
-
-    return;
-  }
-
-
   cartProducts.forEach((product) => {
+    const cartItem = cart.find((item) => item.id === product.id);
 
-    
-  const cartItem = cart.find((item) => item.id === product.id);
+    product.quantity = cartItem.quantity;
 
-  product.quantity = cartItem.quantity;
     const card = createProductCard(product, {
       showDescription: false,
-
       showStock: false,
-
-      showWishlist: true,
-
+      showWishlist: false,
       showAddToCart: false,
-
       showQuantity: true,
-
       showDelete: true,
-
       showOffer: true,
+      showDetails: false,
     });
 
     cartContainer.appendChild(card);
   });
+
+  updateTotal(cartProducts);
 }
 
 if (cartContainer) {
-  displaycart();
+  displayCart();
 }
