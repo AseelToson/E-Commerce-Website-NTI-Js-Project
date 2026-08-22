@@ -10,7 +10,32 @@ document.addEventListener("DOMContentLoaded",()=>{
         const headerContainer = document.createElement("header");
         headerContainer.innerHTML = data;
         document.body.prepend(headerContainer);
-    })
+
+        const searchForm =
+
+                document.getElementById("navbarSearchForm");
+
+            const searchInput =
+
+                document.getElementById("navbarSearchInput");
+
+            searchForm.addEventListener("submit", (e) => {
+
+                e.preventDefault();
+
+                const text =
+
+                    searchInput.value.trim();
+
+                if (text === "") return;
+
+                window.location.href =
+
+                    `products.html?search=${encodeURIComponent(text)}`;
+
+            });
+
+        });
 
     fetch("../General/footer.html")
     .then(response => response.text())
