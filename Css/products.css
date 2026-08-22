@@ -180,7 +180,7 @@ body {
 
     border-radius: 5px;
 
-    background-color: black;
+    background-color: gray;
 
     color: white;
 
@@ -211,6 +211,23 @@ body {
 
     z-index: 2;
 }
+
+
+.cart-actions {
+    gap: 4px;
+    /* flex-wrap: wrap; */
+    align-items: center;
+}
+
+.cart-actions .btn{
+    font-size: 13px;
+    padding: 7px 10px;
+}
+
+
+/* .cart-actions .quantity {
+    flex-shrink: 0;
+} */
 
 @media (max-width: 576px) {
 

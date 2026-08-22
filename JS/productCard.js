@@ -1,10 +1,10 @@
 import { createStars } from "./some.js";
 
-import { addToCart } from "./cart.js";
+import { addToCart, getCart } from "./cart.js";
 
 import { toggleWishlist, isInWishlist } from "./wishlist.js";
 
-import { increaseQuantity, decreaseQuantity,removeFromCart } from "./cart.js";
+import { increaseQuantity, decreaseQuantity, removeFromCart } from "./cart.js";
 
 /* =====================================================
    Create Product Card
@@ -13,17 +13,13 @@ import { increaseQuantity, decreaseQuantity,removeFromCart } from "./cart.js";
 export function createProductCard(product, options = {}) {
   const {
     showDescription = true,
-
     showStock = true,
-
     showWishlist = true,
-
     showAddToCart = true,
-
     showQuantity = false,
-
     showDelete = false,
-    showOffer=true
+    showOffer = true,
+    showDetails = true,
   } = options;
 
   /* ================= cardContainer ================= */
@@ -46,18 +42,16 @@ export function createProductCard(product, options = {}) {
 
   /* ================= Wishlist ================= */
 
-//   console.log(product.discountPercentage);
-  if (showOffer&&product.discountPercentage > 10) {
-
+  //   console.log(product.discountPercentage);
+  if (showOffer && product.discountPercentage > 10) {
     const discount = document.createElement("span");
 
     discount.className = "discount-badge";
 
-    discount.textContent =
-        `-${Math.round(product.discountPercentage)}%`;
+    discount.textContent = `-${Math.round(product.discountPercentage)}%`;
 
     card.appendChild(discount);
-}
+  }
   if (showWishlist) {
     const wishlistButton = document.createElement("button");
 
@@ -91,13 +85,9 @@ export function createProductCard(product, options = {}) {
   /* ================= Image ================= */
 
   const image = document.createElement("img");
-
   image.src = product.thumbnail;
-
   image.alt = product.title;
-
   image.className = "product-image";
-
   card.appendChild(image);
 
   /* ================= Body ================= */
@@ -109,11 +99,8 @@ export function createProductCard(product, options = {}) {
   /* ================= Category ================= */
 
   const category = document.createElement("span");
-
   category.className = "badge bg-secondary";
-
   category.textContent = product.category;
-
   body.appendChild(category);
 
   /* ================= Title ================= */
@@ -159,7 +146,6 @@ export function createProductCard(product, options = {}) {
   /* ================= Price + Stock ================= */
 
   const priceContainer = document.createElement("div");
-
   priceContainer.className = "d-flex justify-content-between mb-3";
 
   const price = document.createElement("span");
@@ -184,11 +170,11 @@ export function createProductCard(product, options = {}) {
 
   const actions = document.createElement("div");
 
-  // actions.className =
-  //     "product-actions";
   actions.className = "d-flex justify-content-between mb-3";
-//   actions.className = "product-actions";
 
+  if (showQuantity || showDelete) {
+    actions.classList.add("cart-actions");
+  }
 
   /* =====================================================
        Add To Cart
@@ -199,32 +185,42 @@ export function createProductCard(product, options = {}) {
 
     addButton.className = "btn btn-danger";
 
-    addButton.textContent = "Add to Cart";
+    const cart = getCart();
+
+    const alreadyInCart = cart.some((item) => item.id === product.id);
+
+    if (alreadyInCart) {
+      addButton.textContent = "Added ✓";
+      addButton.disabled = true;
+    } else {
+      addButton.textContent = "Add to Cart";
+    }
 
     addButton.addEventListener("click", (event) => {
       event.stopPropagation();
 
-      addToCart(product);
+      addToCart(product.id);
 
       addButton.textContent = "Added ✓";
+      addButton.disabled = true;
     });
 
     actions.appendChild(addButton);
   }
 
-  const detailsButton = document.createElement("button");
+  if (showDetails) {
+    const detailsButton = document.createElement("button");
 
-  detailsButton.className = "btn btn-dark";
+    detailsButton.className = "btn btn-dark";
+    detailsButton.textContent = "Details";
 
-  detailsButton.textContent = "datails";
+    detailsButton.addEventListener("click", (event) => {
+      event.stopPropagation(); // go to details page
+      window.location.href = `product-details.html?id=${product.id}`;
+    });
 
-  detailsButton.addEventListener("click", (event) => {
-    event.stopPropagation();
-
-    // addToCart(product);   //go to details page
-  });
-
-  actions.appendChild(detailsButton);
+    actions.appendChild(detailsButton);
+  }
 
   /* =====================================================
        Quantity
@@ -253,10 +249,20 @@ export function createProductCard(product, options = {}) {
 
     /* ---------- Minus ---------- */
 
-    plus.addEventListener("click", (event) => {
-      event.stopPropagation(); //وقف انتشار ال click للأب
+    minus.addEventListener("click", (event) => {
+      event.stopPropagation();
 
       decreaseQuantity(product.id);
+
+      if (Number(number.textContent) > 1) {
+        number.textContent = Number(number.textContent) - 1;
+      } else {
+        // المنتج اتحذف لأن الكمية كانت 1
+        cardContainer.remove();
+      }
+      const currentTotal = parseFloat(totalPrice.textContent.replace("$", ""));
+
+      totalPrice.textContent = `$${(currentTotal - product.price).toFixed(2)}`;
     });
 
     /* ---------- Plus ---------- */
@@ -265,6 +271,14 @@ export function createProductCard(product, options = {}) {
       event.stopPropagation(); //وقف انتشار ال click للأب
 
       increaseQuantity(product.id);
+
+      product.quantity++;
+      number.textContent = product.quantity;
+      const totalPrice = document.getElementById("totalPrice");
+
+      const currentTotal = parseFloat(totalPrice.textContent.replace("$", ""));
+
+      totalPrice.textContent = `$${(currentTotal + product.price).toFixed(2)}`;
     });
 
     quantity.append(minus, number, plus);
@@ -284,12 +298,20 @@ export function createProductCard(product, options = {}) {
     deleteButton.textContent = "Delete";
 
     deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
 
-    event.stopPropagation();
+      removeFromCart(product.id);
+      cardContainer.remove();
+      const currentTotal = parseFloat(totalPrice.textContent.replace("$", ""));
 
-    removeFromCart(product.id);
+      const cart = getCart();
 
-});
+      if (cart.length === 0) {
+        totalPrice.textContent = "$0.00";
+      } else {
+        totalPrice.textContent = `$${(currentTotal - product.price * product.quantity).toFixed(2)}`;
+      }
+    });
 
     actions.appendChild(deleteButton);
   }
