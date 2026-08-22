@@ -16,11 +16,11 @@ const productsContainer =
 const categorySelect =
     document.getElementById("categorySelect");
 
-const searchForm =
-    document.getElementById("searchForm");
+// const searchForm =
+//     document.getElementById("searchForm");
 
-const searchInput =
-    document.getElementById("searchInput");
+// const searchInput =
+//     document.getElementById("searchInput");
 
 const noProducts =
     document.getElementById("noProducts");
@@ -40,7 +40,7 @@ const productsPerPage = 20;
 
 /* ================= Load Products ================= */
 
-async function loadProducts() {
+ async function loadProducts() {
 
     allProducts =
         await getProducts();
@@ -330,37 +330,57 @@ categorySelect.addEventListener(
 
 
 /* ================= Search ================= */
-if (searchForm) {
-    searchForm.addEventListener(
-        "submit",
-        async event => {
+// if (searchForm) {
+//     searchForm.addEventListener(
+//         "submit",
+//         async event => {
 
-            event.preventDefault();
+//             event.preventDefault();
 
-            const text =
-                searchInput.value.trim();
+//             const text =
+//                 searchInput.value.trim();
 
-            if (text === "") {
+//             if (text === "") {
 
-                currentProducts = allProducts;
-                currentPage = 1;
-                displayProducts();
+//                 currentProducts = allProducts;
+//                 currentPage = 1;
+//                 displayProducts();
 
-                return;
-            }
+//                 return;
+//             }
 
-            const products =
-                await searchAboutProduct(text);
+//             const products =
+//                 await searchAboutProduct(text);
+
+//             currentProducts = products;
+//             currentPage = 1;
+
+//             displayProducts();
+//         }
+//     );
+// }
+
+
+/* ================= Start ================= */
+
+//  ladProducts();
+/* ================= Start ================= */
+
+const params = new URLSearchParams(window.location.search);
+const searchText = params.get("search");
+
+loadProducts().then(() => {
+
+    if (searchText) {
+
+        searchAboutProduct(searchText).then((products) => {
 
             currentProducts = products;
             currentPage = 1;
 
             displayProducts();
-        }
-    );
-}
 
+        });
+    }
 
-/* ================= Start ================= */
-
-loadProducts();
+});
